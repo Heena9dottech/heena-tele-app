@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TelegramController extends Controller
 {
     public function webhook(Request $request)
     {
+        Log::info('Bot received:', $request->all());
+
         $data = $request->all();
 
         // Optional: Save message to DB
