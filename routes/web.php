@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TelegramController;
+use App\Http\Controllers\TelegramWebhookController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -20,7 +21,10 @@ Route::get('/db-check', function () {
 });
 
 
-Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
+// Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
+
+Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handle']);
+
 
 
 Route::get('/cacheclear', function () {
