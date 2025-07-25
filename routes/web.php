@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TelegramController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
@@ -17,6 +18,10 @@ Route::get('/db-check', function () {
         return "DB ERROR: " . $e->getMessage();
     }
 });
+
+
+Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
+
 
 Route::get('/cacheclear', function () {
     Artisan::call('cache:clear');
