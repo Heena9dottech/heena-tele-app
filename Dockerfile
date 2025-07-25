@@ -1,29 +1,40 @@
-FROM php:8.1-apache
+# Start from PHP 8.2 FPM image with system dependencies
+FROM php:8.2-fpm
 
+# Set working directory
+WORKDIR /var/www/html
+
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
-    libonig-dev \
+    build-essential \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
     libzip-dev \
     zip \
     unzip \
-    git \
     curl \
-    && docker-php-ext-install pdo_mysql mbstring zip
+    git \
+    libonig-dev \
+    libxml2-dev \
+    && docker-php-ext-install pdo pdo_mysql mbstring zip exif pcntl bcmath gd
 
-RUN a2enmod rewrite
-
-WORKDIR /var/www/html
-
-COPY . /var/www/html
-
+# Install Composer globally
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-RUN composer install
+# Copy project files
+COPY . .
 
+# Install PHP dependencies via Composer
+RUN composer install --optimize-autoloader --no-dev
+
+# Set correct permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html \
-    && chmod -R 755 /var/www/html/storage
+    && chmod -R 755 /var/www/html \
+    && chmod -R 775 storage bootstrap/cache
 
-COPY .env.example .env
-RUN php artisan key:generate
+# Expose port
+EXPOSE 8000
 
-EXPOSE 80
-CMD ["apache2-foreground"]
+# Start Laravel server
+CMD php artisan config:cache && php artisan route:cache && php artisan serve --host=0.0.0.0 --port=8000
