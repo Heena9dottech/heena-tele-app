@@ -17,6 +17,6 @@ class VerifyCsrfToken extends Middleware
      * Add your webhook route here to prevent 419 errors.
      */
     protected $except = [
-        'telegram/webhook', // ✅ Add this line
+          'telegram/webhook',
     ];
 }
