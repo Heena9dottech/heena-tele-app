@@ -29,6 +29,9 @@ Route::get('/db-check', function () {
 Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handle'])
     ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
+Route::middleware('api')->group(function () {
+    Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handle']);
+});
 
 
 Route::get('/cacheclear', function () {
