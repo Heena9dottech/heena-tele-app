@@ -24,6 +24,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+
+Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
+
+
 // Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
 
 // Route::post('/telegram/webhook', function (Request $request) {
@@ -33,29 +37,29 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 //     return response()->json(['status' => 'ok']);
 // });
 
-Route::post('/telegram/webhook', function (Request $request) {
-    Log::info('Telegram Webhook Triggered');
+// Route::post('/telegram/webhook', function (Request $request) {
+//     Log::info('Telegram Webhook Triggered');
 
-    $data = $request->all();
-    Log::info($data);
+//     $data = $request->all();
+//     Log::info($data);
 
-    if (isset($data['message'])) {
-        $chatId = $data['message']['chat']['id'] ?? null;
-        $text = $data['message']['text'] ?? '';
+//     if (isset($data['message'])) {
+//         $chatId = $data['message']['chat']['id'] ?? null;
+//         $text = $data['message']['text'] ?? '';
 
-        // Check if data is valid
-        if ($chatId && $text) {
-            $token = '8323496447:AAHxi6rR27xsAsmuYx3AJYSTvAM5P6Ru7Nc';
-            $url = "https://api.telegram.org/bot$token/sendMessage";
+//         // Check if data is valid
+//         if ($chatId && $text) {
+//             $token = '8308817192:AAGKL7EPF-efA6z9_fQ8EUED39-FUke5cns';
+//             $url = "https://api.telegram.org/bot$token/sendMessage";
 
-            $response = Http::post($url, [
-                'chat_id' => $chatId,
-                'text' => "You said: $text"
-            ]);
+//             $response = Http::post($url, [
+//                 'chat_id' => $chatId,
+//                 'text' => "You said: $text"
+//             ]);
 
-            Log::info('Reply sent', ['response' => $response->json()]);
-        }
-    }
+//             Log::info('Reply sent', ['response' => $response->json()]);
+//         }
+//     }
 
-    return response()->json(['status' => 'ok']);
-});
+//     return response()->json(['status' => 'ok']);
+// });

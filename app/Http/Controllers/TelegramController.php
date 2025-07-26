@@ -3,35 +3,35 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
 class TelegramController extends Controller
 {
     public function webhook(Request $request)
     {
-        $data = $request->all();
-        Log::info('Telegram Webhook Data:', $data);
+        Log::info('Telegram Webhook Triggered');
+        Log::info($request->all());
 
-        // Optional: reply to message
-        if (isset($data['message']['chat']['id'])) {
-            $chatId = $data['message']['chat']['id'];
-            $this->sendMessage($chatId, "Hi Heena! Message received 🎉");
+        $telegramToken = '8308817192:AAGKL7EPF-efA6z9_fQ8EUED39-FUke5cns'; // 🔁 Use your new bot token
+
+        $data = $request->all();
+
+        if (isset($data['message'])) {
+            $chatId = $data['message']['chat']['id'] ?? null;
+            $userMessage = $data['message']['text'] ?? '';
+
+            if ($chatId) {
+                $responseText = "You said: " . $userMessage;
+
+                Http::withOptions(['verify' => false]) // 👈 Disable SSL verification
+                    ->post("https://api.telegram.org/bot{$telegramToken}/sendMessage", [
+                        'chat_id' => $chatId,
+                        'text'    => $responseText,
+                    ]);
+            }
         }
 
         return response()->json(['status' => 'ok']);
-    }
-
-    private function sendMessage($chatId, $text)
-    {
-        $token = env('TELEGRAM_BOT_TOKEN');
-        $url = "https://api.telegram.org/bot{$token}/sendMessage";
-
-        $payload = [
-            'chat_id' => $chatId,
-            'text' => $text
-        ];
-
-        $client = new \GuzzleHttp\Client();
-        $client->post($url, ['form_params' => $payload]);
     }
 }
