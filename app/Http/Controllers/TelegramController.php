@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\TelegramMessage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
@@ -13,21 +14,26 @@ class TelegramController extends Controller
         Log::info('Telegram Webhook Triggered');
         Log::info($request->all());
 
-        $telegramToken = '8308817192:AAGKL7EPF-efA6z9_fQ8EUED39-FUke5cns'; // 🔁 Use your new bot token
+        $telegramToken = '8308817192:AAGKL7EPF-efA6z9_fQ8EUED39-FUke5cns';
 
         $data = $request->all();
 
         if (isset($data['message'])) {
             $chatId = $data['message']['chat']['id'] ?? null;
             $userMessage = $data['message']['text'] ?? '';
+            $username = $data['message']['from']['username'] ?? null;
 
             if ($chatId) {
-                $responseText = "You said: " . $userMessage;
+                TelegramMessage::create([
+                    'chat_id' => $chatId,
+                    'username' => $username,
+                    'message' => $userMessage,
+                ]);
 
-                Http::withOptions(['verify' => false]) // 👈 Disable SSL verification
+                Http::withOptions(['verify' => false])
                     ->post("https://api.telegram.org/bot{$telegramToken}/sendMessage", [
                         'chat_id' => $chatId,
-                        'text'    => $responseText,
+                        'text'    => "You said: " . $userMessage,
                     ]);
             }
         }
