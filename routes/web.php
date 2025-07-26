@@ -18,4 +18,8 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
+// Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
+
+Route::get('/game', function () {
+    return view('game'); // This will look for resources/views/game.blade.php
+});
