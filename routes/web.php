@@ -5,6 +5,7 @@ use App\Http\Controllers\TelegramWebhookController;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
+use App\Http\Middleware\VerifyTelegramWebhook;
 
 Route::get('/', function () {
     return view('welcome');
@@ -22,8 +23,11 @@ Route::get('/db-check', function () {
 
 
 // Route::post('/telegram/webhook', [TelegramController::class, 'webhook']);
+// Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handle']);
 
-Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handle']);
+
+Route::post('/telegram/webhook', [TelegramWebhookController::class, 'handle'])
+    ->withoutMiddleware([\App\Http\Middleware\VerifyCsrfToken::class]);
 
 
 
