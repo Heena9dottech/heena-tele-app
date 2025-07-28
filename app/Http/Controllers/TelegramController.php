@@ -31,8 +31,8 @@ class TelegramController extends Controller
                         'chat_id' => $chatId,
                         //   'photo' => 'https://heena-tele-app.onrender.com/images/miniapp-banner.jpg',
                         'photo' => 'https://i.imgur.com/I8YQv2f.jpg',
+                        'caption' => "🎮 *Welcome to the Heena Mini Game!*\n\nThis is a fun interactive game built just for you.\n\n👇 Click the button below to start playing!",
 
-                        'caption' => "🎮 *Welcome to the Heena Mini Game!*\n\nClick the button below to start playing. Enjoy!",
                         'parse_mode' => 'Markdown',
                         'reply_markup' => json_encode([
                             'inline_keyboard' => [
