@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Artisan;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
 Route::get('/cacheclear', function () {
     Artisan::call('cache:clear');
     Artisan::call('route:clear');
@@ -34,5 +35,10 @@ Route::get('/', function () {
 Route::get('/game', function () {
     return view('game'); // This will look for resources/views/game.blade.php
 });
+// routes/web.php
+Route::get('/about', function () {
+    return view('about');
+});
+
 
 // curl -X POST "https://api.telegram.org/bot8308817192:AAGKL7EPF-efA6z9_fQ8EUED39-FUke5cns/setWebhook" -d "url=https://heena-tele-app.onrender.com/api/telegram/webhook"

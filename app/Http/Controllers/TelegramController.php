@@ -42,6 +42,12 @@ class TelegramController extends Controller
                                         'web_app' => [
                                             'url' => 'https://heena-tele-app.onrender.com/game'
                                         ]
+                                    ],
+                                    [
+                                        'text' => '📋 About the Game',
+                                        'web_app' => [
+                                            'url' => 'https://heena-tele-app.onrender.com/about'
+                                        ]
                                     ]
                                 ]
                             ]
