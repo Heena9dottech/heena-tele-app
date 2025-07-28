@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\TelegramController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +14,16 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+Route::get('/cacheclear', function () {
+    Artisan::call('cache:clear');
+    Artisan::call('route:clear');
+    Artisan::call('route:cache');
+    Artisan::call('config:cache');
+    Artisan::call('view:clear');
+    Artisan::call('config:clear');
+    // dd("Done");
+    return response()->json(["message" => "Cache clear", "status" => true]);
+});
 
 Route::get('/', function () {
     return view('welcome');
